@@ -56,3 +56,16 @@ def top_n(
         raise AggregationError(f"n must be a positive integer, got {n!r}")
     counter = count_by(entries, field)
     return counter.most_common(n)
+
+
+def frequency(entries: Iterable[Dict[str, Any]], field: str) -> Dict[Any, float]:
+    """Return the relative frequency of each value for *field*.
+
+    Each value maps to its proportion of total entries as a float between
+    0.0 and 1.0.  Returns an empty dict if *entries* is empty.
+    """
+    counter = count_by(entries, field)
+    total = sum(counter.values())
+    if total == 0:
+        return {}
+    return {value: count / total for value, count in counter.items()}
